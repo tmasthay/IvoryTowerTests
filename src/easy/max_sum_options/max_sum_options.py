@@ -3,7 +3,8 @@ import hydra
 
 def max_sum_options(vals, k):
     vals.sort()
-    vals = [-e if i < k else e for i, e in enumerate(vals)]
+    k_eff = min(k, len([e for e in vals if e < 0]))
+    vals = [-e if i < k_eff else e for i, e in enumerate(vals)]
     return sum(vals)
 
 
