@@ -23,7 +23,7 @@ def merge_intervals(intervals):
 def main(cfg):
     failures = []
     for test in cfg.tests:
-        res = merge_intervals(test[0])
+        res = merge_intervals(*test[0])
         if set(res) != set([tuple(e) for e in test[1]]):
             failures.append([test[0], test[1], res])
     print(f'Passed {len(cfg.tests) - len(failures)} of {len(cfg.tests)}')

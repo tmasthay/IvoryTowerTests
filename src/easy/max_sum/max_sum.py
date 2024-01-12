@@ -1,29 +1,20 @@
 import hydra
-import numpy as np
 
 
-def max_sum(intervals):
-    idx = 0
-
-    intervals.sort()
-
-    while idx < len(intervals) - 1:
-        a, b = intervals[idx]
-        c, d = intervals[idx + 1]
-        if (a <= c and c <= b) or (c <= a and a <= d):
-            intervals[idx] = (min(a, c), max(b, d))
-            intervals.pop(idx + 1)
-        else:
-            idx += 1
-    return intervals
+def max_sum(*args):
+    return 0
 
 
 @hydra.main(config_path=".", config_name="config.yaml", version_base=None)
 def main(cfg):
     failures = []
     for test in cfg.tests:
-        res = max_sum(test[0])
-        if set(res) != set([tuple(e) for e in test[1]]):
+        res = max_sum(*test[0])
+        if type(res) not in [list, set]:
+            success = res == test[1]
+        else:
+            success = set(res) == set([tuple(e) for e in test[1]])
+        if not success:
             failures.append([test[0], test[1], res])
     print(f'Passed {len(cfg.tests) - len(failures)} of {len(cfg.tests)}')
     for failure in failures:

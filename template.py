@@ -10,7 +10,11 @@ def main(cfg):
     failures = []
     for test in cfg.tests:
         res = your_function_name(*test[0])
-        if set(res) != set([tuple(e) for e in test[1]]):
+        if type(res) not in [list, set]:
+            success = res == test[1]
+        else:
+            success = set(res) == set([tuple(e) for e in test[1]])
+        if not success:
             failures.append([test[0], test[1], res])
     print(f'Passed {len(cfg.tests) - len(failures)} of {len(cfg.tests)}')
     for failure in failures:
