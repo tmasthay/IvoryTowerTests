@@ -1,8 +1,42 @@
 import hydra
 
 
-def min_window_substring(*args):
-    return 0
+def min_window_substring(s, t):
+    if not s or not t or len(s) < len(t):
+        return ""
+
+    freqs = {}
+    for tt in t:
+        freqs[tt] = freqs.get(tt, 0) + 1
+
+    start, end = 0, 0
+    min_start, min_length = 0, float("inf")
+    seen_chars, required_chars = 0, len(t)
+
+    while end < len(s):
+        end_char = s[end]
+        if end_char in freqs:
+            freqs[end_char] -= 1
+            if freqs[end_char] >= 0:
+                seen_chars += 1
+
+        while start <= end and seen_chars == required_chars:
+            start_char = s[start]
+            if end - start + 1 < min_length:
+                min_length = end - start + 1
+                min_start = start
+
+            if start_char in freqs:
+                freqs[start_char] += 1
+                if freqs[start_char] > 0:
+                    seen_chars -= 1
+            start += 1
+
+        end += 1
+    if min_length == float("inf"):
+        return ""
+    else:
+        return s[min_start : (min_start + min_length)]
 
 
 @hydra.main(config_path=".", config_name="config.yaml", version_base=None)
