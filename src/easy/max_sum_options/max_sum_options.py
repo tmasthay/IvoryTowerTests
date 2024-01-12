@@ -1,7 +1,7 @@
 import hydra
 
 
-def max_sum(vals, k):
+def max_sum_options(vals, k):
     vals.sort()
     vals = [-e if i < k else e for i, e in enumerate(vals)]
     return sum(vals)
@@ -11,7 +11,7 @@ def max_sum(vals, k):
 def main(cfg):
     failures = []
     for test in cfg.tests:
-        res = max_sum(*test[0])
+        res = max_sum_options(*test[0])
         if type(res) not in [list, set]:
             success = res == test[1]
         else:
